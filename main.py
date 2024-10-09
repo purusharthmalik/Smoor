@@ -1,14 +1,24 @@
 import numpy as np
 import pandas as pd
 import openpyxl as xl
+import warnings
+
+warnings.filterwarnings('ignore')
 
 print("Loading the workbooks...")
 workbook = xl.load_workbook(r"C:\Users\purus\Downloads\Bangalore Costcenter july -24.xlsx")
 tally = workbook[workbook.sheetnames[0]]
 
-mis_master = pd.read_excel(r"S:\smoor\data\Master MIS.xlsx",
-                          skiprows=[0,1])
+mis_master = pd.read_excel(r"S:\smoor\data\Master MIS(1).xlsx")
 mis_master.drop_duplicates(subset=['Code'], inplace=True)
+
+# Loading the categories
+cc_category = pd.read_excel(r"S:\smoor\data\Master MIS(1).xlsx", "Mapping",
+                            skiprows=[0]).T
+cc_category.reset_index(inplace=True)
+cc_category.columns = cc_category.iloc[0]
+cc_category.drop(0, inplace=True)
+cc_category[cc_category.columns[0]] = cc_category[cc_category.columns[0]].apply(lambda x: np.nan if x.startswith('Unnamed:') else x)
 
 # Renaming the columns
 print("Renaming the headers...")
@@ -80,15 +90,30 @@ for idx, col in enumerate(tally.iter_cols(min_row=4, min_col=13)):
     if idx == 0:
         value_df = pd.DataFrame({col_name: temp})
     else:
-        value_df[col_name] = temp
+        if col_name in value_df.columns:
+            value_df[col_name] += temp
+        else:
+            value_df[col_name] = temp
     temp = []
 
 # Creating the total column
 value_df['Total'] = value_df.sum(axis=1)
+print(len(value_df.columns))
+
+# Creating the category-wise total
+for col in cc_category.columns:
+    cost_centers = list(cc_category[col].dropna().values)
+    final_cc = []
+    for cc in cost_centers:
+        if cc in value_df.columns:
+            final_cc.append(cc)
+        else:
+            print(cc)
+    value_df[col] = value_df[final_cc].sum(axis=1)
 
 master_cols = pd.DataFrame(np.array([gl_codes, names, party_ac, vch_narration, led_narration, f, g, h, i, j, k, l]).T,
                            columns=['GL Code', 'Name', 'Party A/c', 'Vch Narration', 'Led Narration', 'A/c Grp 5', 'A/c Grp 4', 'A/c Grp3 (Alloc)', 'A/c Grp 2 (MIS)', 'A/c Grp 1', 'Verical Grp', 'Final Grp in P&L'])
 final_df = pd.concat([master_cols, value_df],
                      axis=1)
 final_df.to_csv("Generated BLR Final.csv", index=False)
-print("Files saved!")
+print("Files saved")
