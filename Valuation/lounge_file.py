@@ -176,7 +176,7 @@ for code, city, item_type, category in zip(final_df['SKU Code'], final_df['City'
                 except:
                     val_rates.append(0)
         elif city in ['Mumbai', 'Pune']:
-            if category in ['Cakes', 'Bakery', 'Tea cakes']:
+            if category in ['Cakes & Pastries', 'Bakery', 'Tea Cakes & Muffins', 'Teacake & Muffins']:
                 try:
                     val_rates.append(smoor_sheet[smoor_sheet['FG Code'] == code]['FnP (At Factory Level)'].values[0])
                 except:
@@ -190,7 +190,7 @@ for code, city, item_type, category in zip(final_df['SKU Code'], final_df['City'
                 except:
                     val_rates.append(0)
         else:
-            if category == 'Cakes':
+            if category == 'Cakes & Pastries':
                 try:
                     val_rates.append(smoor_sheet[smoor_sheet['FG Code'] == code]['FnP (At Factory Level)'].values[0])
                 except:

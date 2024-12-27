@@ -7,11 +7,11 @@ import warnings
 warnings.filterwarnings('ignore')
 
 for city_name, excel_file in zip(['blr', 'che', 'del', 'gur', 'mum'], 
-                           [r"C:\Users\purus\Downloads\Bliss-blr-oct24(1).xlsx",
-                            r"C:\Users\purus\Downloads\onst center Chennai -oct-24.xlsx",
-                            r"C:\Users\purus\Downloads\Cost center Delhi-oct-24.xlsx",
-                            r"C:\Users\purus\Downloads\Cost center Gurgaon-oct-24.xlsx",
-                            r"C:\Users\purus\Downloads\Bliss-mum-oct24.xlsx"]):
+                           [r"C:\Users\purus\Downloads\Copy of Blr Cost Centre Nov 24.xlsx",
+                            r"C:\Users\purus\Downloads\Copy of Chennai Cost center Nov 24.xlsx",
+                            r"C:\Users\purus\Downloads\Copy of Delhi Cost center Nov 24.xlsx",
+                            r"C:\Users\purus\Downloads\Copy of Gurgaon Cost center Nov 24.xlsx",
+                            r"C:\Users\purus\Downloads\Copy of Bliss Mumbai cost center Nov 24.xlsx"]):
     print("Loading the workbooks...")
     try:
         workbook = xl.load_workbook(excel_file)
@@ -132,5 +132,5 @@ for city_name, excel_file in zip(['blr', 'che', 'del', 'gur', 'mum'],
     final_df = pd.concat([master_cols, value_df],
                         axis=1)
     final_df.drop(final_df.tail(1).index,inplace=True)
-    final_df.to_csv(f"{city_name.upper()}_Oct.csv", index=False)
+    final_df.to_csv(f"{city_name.upper()}_Nov.csv", index=False)
     print(f"Files saved for {city_name}!")

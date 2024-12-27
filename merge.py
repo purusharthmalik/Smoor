@@ -12,11 +12,12 @@ def merge_excel_files(input_files, output_file):
 
     print(f"All files have been merged into {output_file}")
 
-input_files = ['C:/Users/purus/Documents/GitHub/Smoor/BLR_Oct.csv',
-               'C:/Users/purus/Documents/GitHub/Smoor/MUM_Oct.csv',
-               'C:/Users/purus/Documents/GitHub/Smoor/DEL_Oct.csv',
-               'C:/Users/purus/Documents/GitHub/Smoor/GUR_Oct.csv',
-               'C:/Users/purus/Documents/GitHub/Smoor/CHE_Oct.csv']
+month = 'Nov'
+input_files = [f'C:/Users/purus/Documents/GitHub/Smoor/BLR_{month}.csv',
+               f'C:/Users/purus/Documents/GitHub/Smoor/MUM_{month}.csv',
+               f'C:/Users/purus/Documents/GitHub/Smoor/DEL_{month}.csv',
+               f'C:/Users/purus/Documents/GitHub/Smoor/GUR_{month}.csv',
+               f'C:/Users/purus/Documents/GitHub/Smoor/CHE_{month}.csv']
 output_file = 'Cost_Center_Final_Oct_Revised.xlsx'
 
 merge_excel_files(input_files, output_file)
